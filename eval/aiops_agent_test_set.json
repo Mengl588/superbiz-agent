@@ -1,0 +1,154 @@
+[
+  {
+    "id": "normal_cpu_rootcause",
+    "scenario": "normal",
+    "question": "诊断 data-sync-service 的 CPU 持续升高问题。请查询 CPU 或服务健康数据，并结合近期发布或历史工单给出基于证据的根因和处理建议。",
+    "expected_tool_groups": [["query_cpu_metrics", "query_service_health"], ["query_recent_deployments", "search_historical_tickets"]],
+    "expected_keywords": ["data-sync-service", "CPU", "建议"]
+  },
+  {
+    "id": "normal_memory_process",
+    "scenario": "normal",
+    "question": "分析 data-sync-service 的内存风险，需要查询内存指标和进程信息，并给出排查与处理建议。",
+    "expected_tool_groups": [["query_memory_metrics"], ["query_process_list"]],
+    "expected_keywords": ["data-sync-service", "内存", "建议"]
+  },
+  {
+    "id": "normal_recommend_latency",
+    "scenario": "normal",
+    "question": "排查 recommend-service 的接口延迟问题，请结合服务健康状态以及近期发布或历史工单生成诊断结论。",
+    "expected_tool_groups": [["query_service_health"], ["query_recent_deployments", "search_historical_tickets"]],
+    "expected_keywords": ["recommend-service", "延迟", "建议"]
+  },
+  {
+    "id": "normal_order_error",
+    "scenario": "normal",
+    "question": "调查 order-service 错误率升高的可能原因，请查询服务信息和历史工单后给出处理建议。",
+    "expected_tool_groups": [["get_service_info", "query_service_health"], ["search_historical_tickets"]],
+    "expected_keywords": ["order-service", "错误", "建议"]
+  },
+  {
+    "id": "normal_warning_services",
+    "scenario": "normal",
+    "question": "列出当前处于 warning 状态的服务，并至少选择一个服务查询健康详情，说明风险和建议。",
+    "expected_tool_groups": [["list_all_services"], ["query_service_health", "get_service_info"]],
+    "expected_keywords": ["warning", "建议"]
+  },
+  {
+    "id": "normal_release_change",
+    "scenario": "normal",
+    "question": "分析 data-sync-service 在 2026-08-24 到 2026-08-26 的发布变更是否可能与故障有关，需要查询近期发布记录和服务健康状态。",
+    "expected_tool_groups": [["query_recent_deployments"], ["query_service_health"]],
+    "expected_keywords": ["data-sync-service", "发布", "风险"]
+  },
+  {
+    "id": "normal_cpu_ticket",
+    "scenario": "normal",
+    "question": "针对 data-sync-service 高 CPU，查询 CPU 指标和同类历史工单，给出根因判断及恢复措施。",
+    "expected_tool_groups": [["query_cpu_metrics"], ["search_historical_tickets"]],
+    "expected_keywords": ["data-sync-service", "CPU", "根因"]
+  },
+  {
+    "id": "normal_cls_log",
+    "scenario": "normal",
+    "question": "查询 data-sync-service 对应的日志主题，并检索最近日志，说明是否发现异常以及下一步建议。",
+    "expected_tool_groups": [["search_topic_by_service_name"], ["search_log"]],
+    "expected_keywords": ["data-sync-service", "日志", "建议"]
+  },
+  {
+    "id": "normal_payment_health",
+    "scenario": "normal",
+    "question": "检查 payment-service 的基础信息和健康状态，判断当前是否存在明显资源风险。",
+    "expected_tool_groups": [["get_service_info"], ["query_service_health"]],
+    "expected_keywords": ["payment-service", "健康", "风险"]
+  },
+  {
+    "id": "normal_data_sync_overview",
+    "scenario": "normal",
+    "question": "对 data-sync-service 做一次综合巡检，至少查询服务健康状态，并结合近期发布或历史工单给出结论。",
+    "expected_tool_groups": [["query_service_health"], ["query_recent_deployments", "search_historical_tickets"]],
+    "expected_keywords": ["data-sync-service", "结论", "建议"]
+  },
+  {
+    "id": "normal_recommend_history",
+    "scenario": "normal",
+    "question": "结合 recommend-service 的历史工单和近期发布记录，分析延迟风险并提出措施。",
+    "expected_tool_groups": [["search_historical_tickets"], ["query_recent_deployments"]],
+    "expected_keywords": ["recommend-service", "延迟", "措施"]
+  },
+  {
+    "id": "normal_service_inventory",
+    "scenario": "normal",
+    "question": "获取服务清单，并进一步查询 data-sync-service 的详细信息，整理其依赖、状态和负责人。",
+    "expected_tool_groups": [["list_all_services"], ["get_service_info"]],
+    "expected_keywords": ["data-sync-service", "依赖", "状态"]
+  },
+  {
+    "id": "timeout_cpu_replan",
+    "scenario": "timeout",
+    "fault_tool": "query_cpu_metrics",
+    "fault_attempts": 3,
+    "question": "诊断 data-sync-service 高 CPU。先查询 CPU 指标；如果该工具超时，必须由 Replanner 调整计划，改用服务健康或历史工单继续完成诊断。",
+    "expected_tool_groups": [["query_cpu_metrics", "query_service_health"], ["search_historical_tickets", "query_recent_deployments"]],
+    "expected_keywords": ["data-sync-service", "CPU", "建议"]
+  },
+  {
+    "id": "timeout_memory_replan",
+    "scenario": "timeout",
+    "fault_tool": "query_memory_metrics",
+    "fault_attempts": 3,
+    "question": "分析 data-sync-service 内存问题。先查询内存指标；如果工具超时，必须重新规划并通过服务健康或进程列表补充证据。",
+    "expected_tool_groups": [["query_memory_metrics", "query_service_health"], ["query_process_list"]],
+    "expected_keywords": ["data-sync-service", "内存", "建议"]
+  },
+  {
+    "id": "timeout_deployment_replan",
+    "scenario": "timeout",
+    "fault_tool": "query_recent_deployments",
+    "fault_attempts": 3,
+    "question": "判断 recommend-service 延迟是否与发布有关。先查询发布记录；若工具超时，必须重新规划，改查历史工单和服务健康后给出结论。",
+    "expected_tool_groups": [["query_recent_deployments", "search_historical_tickets"], ["query_service_health"]],
+    "expected_keywords": ["recommend-service", "延迟", "结论"]
+  },
+  {
+    "id": "timeout_log_replan",
+    "scenario": "timeout",
+    "fault_tool": "search_log",
+    "fault_attempts": 3,
+    "question": "排查 data-sync-service 日志异常。查询日志时如发生超时，必须由 Replanner 调整计划，使用服务健康和历史工单完成诊断。",
+    "expected_tool_groups": [["search_log", "query_service_health"], ["search_historical_tickets"]],
+    "expected_keywords": ["data-sync-service", "日志", "诊断"]
+  },
+  {
+    "id": "empty_deployment_replan",
+    "scenario": "empty",
+    "fault_tool": "query_recent_deployments",
+    "question": "诊断 data-sync-service 的故障并先查询近期发布；如果发布记录为空，必须重新规划，通过历史工单和服务健康信息继续定位。",
+    "expected_tool_groups": [["search_historical_tickets"], ["query_service_health"]],
+    "expected_keywords": ["data-sync-service", "根因", "建议"]
+  },
+  {
+    "id": "empty_ticket_replan",
+    "scenario": "empty",
+    "fault_tool": "search_historical_tickets",
+    "question": "分析 recommend-service 延迟并先查询历史工单；若无结果，必须重新规划，改查近期发布和服务健康状态。",
+    "expected_tool_groups": [["query_recent_deployments"], ["query_service_health"]],
+    "expected_keywords": ["recommend-service", "延迟", "建议"]
+  },
+  {
+    "id": "empty_process_replan",
+    "scenario": "empty",
+    "fault_tool": "query_process_list",
+    "question": "排查 data-sync-service 高 CPU 并先查询进程列表；如果进程结果为空，必须重新规划，改用 CPU 指标和历史工单完成诊断。",
+    "expected_tool_groups": [["query_cpu_metrics"], ["search_historical_tickets"]],
+    "expected_keywords": ["data-sync-service", "CPU", "诊断"]
+  },
+  {
+    "id": "empty_topic_replan",
+    "scenario": "empty",
+    "fault_tool": "search_topic_by_service_name",
+    "question": "排查 data-sync-service 日志问题并先查询日志主题；若主题查询为空，必须重新规划，使用服务健康和历史工单形成诊断结论。",
+    "expected_tool_groups": [["query_service_health"], ["search_historical_tickets"]],
+    "expected_keywords": ["data-sync-service", "日志", "结论"]
+  }
+]
